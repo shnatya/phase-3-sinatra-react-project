@@ -10,16 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_19_212218) do
-
-  create_table "jokes", force: :cascade do |t|
-    t.string "question"
-    t.string "answer"
-    t.integer "username_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "username"
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end
