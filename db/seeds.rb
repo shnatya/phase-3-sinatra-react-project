@@ -19,7 +19,7 @@ Joke.create(question: "What is a vampire’s favorite fruit?", answer: "a_blood_
 Joke.create(question: "What is a witch’s favorite subject in school?", answer: "spelling", username_id: 4)
 Joke.create(question: "What sound do hedgehogs make when they hug?", answer: "ouch", username_id: 4)
 
-puts "🌱 Done seeding jokes!"
+puts "✅ Done seeding jokes!"
   
 puts "🌱 Seeding categories ..."
 
@@ -29,7 +29,7 @@ Category.create(category_name: "Food")
 Category.create(category_name: "Fantasy")
 Category.create(category_name: "School")
  
-puts "🌱 Done seeding categories!"
+puts "✅ Done seeding categories!"
 
 puts "🌱 Seeding joke_categories ..."
 
@@ -43,3 +43,5 @@ JokeCategory.create(joke_id: 6, category_id: 4)
 JokeCategory.create(joke_id: 7, category_id: 4)
 JokeCategory.create(joke_id: 7, category_id: 5)
 JokeCategory.create(joke_id: 8, category_id: 1)
+
+puts "✅ Done seeding joke_categories!"
