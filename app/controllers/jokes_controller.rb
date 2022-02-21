@@ -5,6 +5,14 @@ class JokesController < ApplicationController
         jokes = Joke.all
         jokes.to_json(include: :user)
     end
+
+    get "/jokes/:category_name" do
+        capitalized_category = params[:category_name].capitalize()
+        
+        category = Category.find_by(category_name: capitalized_category)
+        jokes = JokeCategory.where(category_id: category.id)
+        jokes.to_json
+    end
     
     post "/jokes" do
         user = User.find_or_create_by(username: params[:user][:username])
