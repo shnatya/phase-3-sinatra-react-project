@@ -3,7 +3,7 @@ class JokesController < ApplicationController
 
     get "/jokes" do
         jokes = Joke.all
-        jokes.to_json(only: [:question, :answer], include: {users: {only: :username}})
+        jokes.to_json(only: [:question, :answer], include: {user: {only: :username}})
     end
 
     get "/jokes/:category_id" do
