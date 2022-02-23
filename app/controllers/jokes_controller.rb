@@ -39,6 +39,13 @@ class JokesController < ApplicationController
         joke.destroy
         joke.to_json
 
+        array_deleted_joke_categories = []
+        joke.joke_categories.each do |j_c|
+            j_c.destroy
+           # j_c.to_json Didn't work
+            array_deleted_joke_categories << j_c
+        end
+        array_deleted_joke_categories.to_json
     end
 end
 
