@@ -10,9 +10,9 @@ class JokesController < ApplicationController
         array_jokes = []
         category = Category.find(params[:category_id])
         category.jokes.each do |joke|
-            array_jokes << {question: joke.question, answer: joke.answer, username: joke.user.username}
+            array_jokes << {question: joke.question, answer: joke.answer, user: joke.user}
         end
-        array_jokes.to_json(include: :user)
+        array_jokes.to_json
     end
     
     post "/jokes" do
@@ -23,8 +23,7 @@ class JokesController < ApplicationController
         array_joke_category_instances = []
         array_categories = params[:category][:category_name].split(/, /)
         array_categories.each do |category|
-            category_instance = Category.find_or_create_by(category_name: category) #need to send
-            #category name or new category name
+            category_instance = Category.find_or_create_by(category_name: category) 
             joke_category = JokeCategory.create(
                 joke_id: joke.id,
                 category_id: category_instance.id)
