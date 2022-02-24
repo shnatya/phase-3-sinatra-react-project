@@ -2,8 +2,8 @@ require "pry"
 class JokesController < ApplicationController
 
     get "/jokes" do
-        jokes = Joke.all
-        jokes.to_json(only: [:question, :answer], include: {user: {only: :username}})
+        jokes = Joke.all 
+        jokes.to_json(only: [:question, :answer], include: [:user, :categories])
     end
 
     get "/jokes/:category_id" do
@@ -12,7 +12,7 @@ class JokesController < ApplicationController
         category.jokes.each do |joke|
             array_jokes << {question: joke.question, answer: joke.answer, username: joke.user.username}
         end
-        array_jokes.to_json
+        array_jokes.to_json(include: :user)
     end
     
     post "/jokes" do
@@ -42,7 +42,7 @@ class JokesController < ApplicationController
         array_deleted_joke_categories = []
         joke.joke_categories.each do |j_c|
             j_c.destroy
-           # j_c.to_json Didn't work
+            #j_c.to_json Didn't work
             array_deleted_joke_categories << j_c
         end
         array_deleted_joke_categories.to_json
