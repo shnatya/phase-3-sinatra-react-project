@@ -3,14 +3,14 @@ class JokesController < ApplicationController
 
     get "/jokes" do
         jokes = Joke.all 
-        jokes.to_json(only: [:question, :answer], include: [:user, :categories])
+        jokes.to_json( include: [:user, :categories])
     end
 
     get "/jokes/:category_id" do
         array_jokes = []
         category = Category.find(params[:category_id])
         category.jokes.each do |joke|
-            array_jokes << {question: joke.question, answer: joke.answer, user: joke.user}
+            array_jokes << {id: joke.id, question: joke.question, answer: joke.answer, user: joke.user}
         end
         array_jokes.to_json
     end
@@ -41,7 +41,6 @@ class JokesController < ApplicationController
         array_deleted_joke_categories = []
         joke.joke_categories.each do |j_c|
             j_c.destroy
-            #j_c.to_json Didn't work
             array_deleted_joke_categories << j_c
         end
         array_deleted_joke_categories.to_json
