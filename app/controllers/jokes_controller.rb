@@ -21,7 +21,7 @@ class JokesController < ApplicationController
         joke.to_json
         
         array_joke_category_instances = []
-        array_categories = params[:category][:category_name].split(/, /)
+        array_categories = params[:category][:category_name].strip.split(/, /)
         array_categories.each do |category|
             category_instance = Category.find_or_create_by(category_name: category) 
             joke_category = JokeCategory.create(
@@ -34,14 +34,24 @@ class JokesController < ApplicationController
     end
     
     delete "/jokes/:id" do
+        
         joke = Joke.find(params[:id])
         joke.destroy
         joke.to_json
 
         array_deleted_joke_categories = []
         joke.joke_categories.each do |j_c|
+            category = j_c.category
             j_c.destroy
             array_deleted_joke_categories << j_c
+
+            #Delete a category if there is no more questions from this category
+            if category.jokes.exists?
+            else
+                category.destroy
+                category.to_json # do we need it here? Should i use this info to update my list of
+                #categories on the screen?
+            end
         end
         array_deleted_joke_categories.to_json
     end
