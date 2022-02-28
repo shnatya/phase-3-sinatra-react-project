@@ -16,11 +16,11 @@ class JokesController < ApplicationController
     end
     
     post "/jokes" do
+        array_of_objects = []
         user = User.find_or_create_by(username: params[:user][:username])
         joke = user.jokes.create(params[:joke])
-        joke.to_json
+        array_of_objects << joke
         
-        array_joke_category_instances = []
         array_categories = params[:category][:category_name].strip.split(/, /)
         array_categories.each do |category|
             category_instance = Category.find_or_create_by(category_name: category) 
@@ -28,9 +28,9 @@ class JokesController < ApplicationController
                 joke_id: joke.id,
                 category_id: category_instance.id)
 
-            array_joke_category_instances << joke_category
+        array_of_objects << joke_category
         end
-        array_joke_category_instances.to_json
+    array_of_objects.to_json
     end
     
     delete "/jokes/:id" do
@@ -46,11 +46,9 @@ class JokesController < ApplicationController
             array_deleted_joke_categories << j_c
 
             #Delete a category if there is no more questions from this category
-            if category.jokes.exists?
-            else
+            if !category.jokes.exists?
                 category.destroy
-                category.to_json # do we need it here? Should i use this info to update my list of
-                #categories on the screen?
+                category.to_json # do we need to send a json response here? 
             end
         end
         array_deleted_joke_categories.to_json
