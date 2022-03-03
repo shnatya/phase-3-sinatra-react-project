@@ -6,7 +6,7 @@ class JokesController < ApplicationController
         jokes.to_json( include: [:user, :categories])
     end
 
-    get "/jokes/:category_id" do
+    get "/jokes/:category_id" do # i dont' need this route?
         array_jokes = []
         category = Category.find(params[:category_id])
         category.jokes.each do |joke|
@@ -16,10 +16,8 @@ class JokesController < ApplicationController
     end
     
     post "/jokes" do
-        array_of_objects = []
         user = User.find_or_create_by(username: params[:user][:username])
         joke = user.jokes.create(params[:joke])
-        array_of_objects << joke
         
         array_categories = params[:category][:category_name].strip.split(/, /)
         array_categories.each do |category|
@@ -27,31 +25,29 @@ class JokesController < ApplicationController
             joke_category = JokeCategory.create(
                 joke_id: joke.id,
                 category_id: category_instance.id)
-
-        array_of_objects << joke_category
         end
-    array_of_objects.to_json
+        joke.to_json(include: [:user, :categories])
     end
     
     delete "/jokes/:id" do
-        
+        array_of_deleted_objects = [{id: "array of deleted objectss"}]
         joke = Joke.find(params[:id])
         joke.destroy
-        joke.to_json
+        array_of_deleted_objects << joke
 
-        array_deleted_joke_categories = []
+        
         joke.joke_categories.each do |j_c|
             category = j_c.category
             j_c.destroy
-            array_deleted_joke_categories << j_c
+            array_of_deleted_objects << j_c
 
             #Delete a category if there is no more questions from this category
             if !category.jokes.exists?
                 category.destroy
-                category.to_json # do we need to send a json response here? 
+                array_of_deleted_objects << category 
             end
         end
-        array_deleted_joke_categories.to_json
+        array_of_deleted_objects.to_json
     end
 end
 
