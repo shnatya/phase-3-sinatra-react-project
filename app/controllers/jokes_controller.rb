@@ -3,7 +3,7 @@ class JokesController < ApplicationController
 
     get "/jokes" do
         jokes = Joke.all 
-        jokes.to_json( include: [:user, :categories])
+        jokes.to_json(include: [:user, :categories])
     end
 
     get "/jokes/:category_id" do # i dont' need this route?
@@ -21,6 +21,7 @@ class JokesController < ApplicationController
         
         array_categories = params[:category][:category_name].strip.split(/, /)
         array_categories.each do |category|
+            category = category.capitalize()
             category_instance = Category.find_or_create_by(category_name: category) 
             joke_category = JokeCategory.create(
                 joke_id: joke.id,
@@ -30,7 +31,7 @@ class JokesController < ApplicationController
     end
     
     delete "/jokes/:id" do
-        array_of_deleted_objects = [{id: "array of deleted objectss"}]
+        array_of_deleted_objects = []
         joke = Joke.find(params[:id])
         joke.destroy
         array_of_deleted_objects << joke
@@ -39,12 +40,12 @@ class JokesController < ApplicationController
         joke.joke_categories.each do |j_c|
             category = j_c.category
             j_c.destroy
-            array_of_deleted_objects << j_c
+            #array_of_deleted_objects << j_c
 
             #Delete a category if there is no more questions from this category
             if !category.jokes.exists?
                 category.destroy
-                array_of_deleted_objects << category 
+                array_of_deleted_objects << category.category_name 
             end
         end
         array_of_deleted_objects.to_json
