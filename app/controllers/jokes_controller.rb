@@ -6,7 +6,7 @@ class JokesController < ApplicationController
         jokes.to_json(include: [:user, :categories])
     end
 
-    get "/jokes/:category_id" do # i dont' need this route?
+    get "/jokes/:category_id" do 
         array_jokes = []
         category = Category.find(params[:category_id])
         category.jokes.each do |joke|
@@ -40,7 +40,6 @@ class JokesController < ApplicationController
         joke.joke_categories.each do |j_c|
             category = j_c.category
             j_c.destroy
-            #array_of_deleted_objects << j_c
 
             #Delete a category if there is no more questions from this category
             if !category.jokes.exists?
