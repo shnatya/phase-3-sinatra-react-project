@@ -2,7 +2,7 @@ require "pry"
 class JokesController < ApplicationController
 
     get "/jokes" do
-        jokes = Joke.all 
+        jokes = Joke.all
         jokes.to_json(include: [:user, :categories])
     end
 
@@ -21,7 +21,7 @@ class JokesController < ApplicationController
         
         array_categories = params[:category][:category_name].strip.split(/, /)
         array_categories.each do |category|
-            category = category.capitalize()
+            category = category.capitalize
             category_instance = Category.find_or_create_by(category_name: category) 
             joke_category = JokeCategory.create(
                 joke_id: joke.id,
@@ -49,5 +49,6 @@ class JokesController < ApplicationController
         end
         array_of_deleted_objects.to_json
     end
+
 end
 

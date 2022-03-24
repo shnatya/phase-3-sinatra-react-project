@@ -2,9 +2,9 @@
 # if our application is running locally in development, in a test environment, or in production
 ENV['RACK_ENV'] ||= "development"
 
-# Require in Gems
+# Require Bundler first
 require 'bundler/setup'
-Bundler.require(:default, ENV['RACK_ENV'])
+Bundler.require(:default, ENV['RACK_ENV']) # Require in Gems
 
 # Require in all files in 'app' directory
 require_all 'app'

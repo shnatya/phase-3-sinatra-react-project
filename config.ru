@@ -14,4 +14,5 @@ use Rack::JSONBodyParser
 # Our application
 use JokesController
 use CategoriesController
+
 run ApplicationController
