@@ -16,8 +16,10 @@ class JokesController < ApplicationController
     end
     
     post "/jokes" do
+        error = []
         user = User.find_or_create_by(username: params[:user][:username])
         joke = user.jokes.create(params[:joke])
+        
         
         array_categories = params[:category][:category_name].strip.split(/, /)
         array_categories.each do |category|
@@ -28,6 +30,7 @@ class JokesController < ApplicationController
                 category_id: category_instance.id)
         end
         joke.to_json(include: [:user, :categories])
+        
     end
     
     delete "/jokes/:id" do
