@@ -1,4 +1,4 @@
 class User < ActiveRecord::Base
     has_many :jokes
-    #validates_presence_of :username
+    validates :username, presence: true
 end

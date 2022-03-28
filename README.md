@@ -2,8 +2,7 @@
 
 This project includes two parts - frontend application written in React and backend written using Sinatra and Active Record. In this README.md file, you find the description of the backend part. 
 
-React frontend repository is located [**here**][React link].
-[React link]: https://github.com/shnatya/my-app-frontend
+React frontend repository is located at https://github.com/shnatya/my-app-frontend
 
 
 ## Installation
@@ -11,13 +10,14 @@ In the repository of this app, copy information about this repository in **Code*
 In your terminal, type *git clone* and paste what you have copied from GitHub.
 
 To start the server, type in your terminal: 
-  $ bundle exec rake server
+### `$ bundle exec rake server`
+ 
 
 This will run your server on port
 [http://localhost:9293/jokes](http://localhost:9293/jokes).
 
 To start working with database in your terminal:
-  $ bundle exec rake console
+### `$ bundle exec rake console`
 
 
 ## Jokes database
