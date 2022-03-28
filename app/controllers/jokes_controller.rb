@@ -20,9 +20,22 @@ class JokesController < ApplicationController
         errors = []
         user = User.find_or_create_by(username: params[:user][:username])
 
-        if user.id
-            joke = user.jokes.create(params[:joke])
+        if !user.id
+            errors = errors.concat(user.errors.full_messages)
+            
+            joke = user.jokes.build(params[:joke])
+            unless joke.valid?
+                errors = errors.concat(joke.errors.full_messages)
+                
+            end
+        else 
+            joke = user.jokes.build(params[:joke])
+            unless joke.save
+                errors = errors.concat(joke.errors.full_messages)
+            end
+        end
 
+        if user.id && joke.save
             array_categories = params[:category][:category_name].strip.split(/, /)
             array_categories.each do |category|
                 category = category.capitalize
@@ -33,11 +46,10 @@ class JokesController < ApplicationController
             end
             joke.to_json(include: [:user, :categories])
         else 
-            { errors: errors.concat(user.errors.full_messages) }.to_json
+            { errors: errors}.to_json
         end
-        #joke.to_json(include: [:user, :categories])
-        #!user.id && !joke.id
     end
+    
 
     
     delete "/jokes/:id" do
